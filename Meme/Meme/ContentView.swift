@@ -8,14 +8,42 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State var askPepe = ""
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        VStack(spacing: 50) {
+            HStack {
+                Spacer()
+                Image(systemName: "magnifyingglass")
+                    .imageScale(.large)
+                    .foregroundStyle(.foreground)
+                TextField("спроси пепачку", text: $askPepe)
+                Spacer()
+            }
+            .textFieldStyle(.roundedBorder)
+            .padding()
+            
+            Button("ПОЛУЧИТЬ ПРЕДСКАЗАНИЕ") {
+                
+            }
+            .buttonStyle(.bordered)
+            .foregroundStyle(.foreground)
+            
+            HStack {
+                Button("👍") {
+                    
+                }
+                .buttonStyle(.bordered)
+                .tint(.green)
+                
+                Button("👎") {
+                    
+                }
+                .buttonStyle(.bordered)
+                .tint(.red)
+                
+            }
         }
-        .padding()
     }
 }
 
