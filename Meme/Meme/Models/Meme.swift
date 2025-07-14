@@ -7,11 +7,8 @@
 
 import Foundation
 
-struct Meme: Codable {
+struct Meme: Decodable, Equatable, Identifiable {
     let id: Int
     let name: String
     let url: URL
-    let width: Int
-    let height: Int
-    let boxCount: Int
 }
