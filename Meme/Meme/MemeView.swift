@@ -27,5 +27,11 @@ struct MemeView: View {
 }
 
 #Preview {
-    MemeView(meme: getMemes()[1])
+    MemeView(
+        meme: .init(
+            id: 101470,
+            name: "Ancient Aliens",
+            url: .init(string: "https://i.imgflip.com/26am.jpg")!,
+        )
+    )
 }

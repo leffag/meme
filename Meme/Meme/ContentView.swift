@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @State var askPepe = ""
-    var memes = getMemes()
+    @State var memes: [Meme]? = nil
     
     var body: some View {
         VStack(spacing: 50) {
@@ -25,7 +25,9 @@ struct ContentView: View {
             .padding()
             
             Button("ПОЛУЧИТЬ ПРЕДСКАЗАНИЕ") {
-                
+                Task {
+                    memes = await getMemes()
+                }
             }
             .buttonStyle(.bordered)
             .foregroundStyle(.foreground)
@@ -56,23 +58,21 @@ struct ContentView: View {
     ContentView()
 }
 
-func getMemes() -> [Meme] {
-    return [
-        .init(
-            id: 61579,
-            name: "One Does Not Simply",
-            url: .init(string: "https://i.imgflip.com/1bij.jpg")!,
-            width: 568,
-            height: 335,
-            boxCount: 2
-        ),
-        .init(
-            id: 101470,
-            name: "Ancient Aliens",
-            url: .init(string: "https://i.imgflip.com/26am.jpg")!,
-            width: 500,
-            height: 437,
-            boxCount: 2
-        )
-    ]
+func getMemes() async -> [Meme] {
+    let data: Data
+    
+    let url = URL(string: "https://api.imgflip.com/get_memes")!
+    
+    do {
+        data = try await URLSession.shared.data(from: url).0
+    } catch {
+        fatalError("Couldn't find")
+    }
+    
+    do {
+        let decodedResponce = try JSONDecoder().decode(MemesResponse.self, from: data)
+        return decodedResponce.data.memes
+    } catch {
+        fatalError("ловити \(error)")
+    }
 }
