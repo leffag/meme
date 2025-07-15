@@ -13,30 +13,32 @@ struct ContentView: View {
     
     var body: some View {
         VStack(spacing: 50) {
-            HStack {
-                Spacer()
-                Image(systemName: "magnifyingglass")
-                    .imageScale(.large)
-                    .foregroundStyle(.foreground)
-                TextField("спроси пепачку", text: $askPepe)
-                Spacer()
-            }
-            .textFieldStyle(.roundedBorder)
-            .padding()
-            
-            Button("ПОЛУЧИТЬ ПРЕДСКАЗАНИЕ") {
-                Task {
-                    meme = await loadRandomMeme()
+            ScrollView() {
+                HStack {
+                    Spacer()
+                    Image(systemName: "magnifyingglass")
+                        .imageScale(.large)
+                        .foregroundStyle(.foreground)
+                    TextField("спроси пепачку", text: $askPepe)
+                    Spacer()
                 }
+                .textFieldStyle(.roundedBorder)
+                .padding()
+                
+                Button("ПОЛУЧИТЬ ПРЕДСКАЗАНИЕ") {
+                    Task {
+                        meme = await loadRandomMeme()
+                    }
+                }
+                .disabled(askPepe.isEmpty)
+                .buttonStyle(.bordered)
+                .tint(.cyan)
             }
-            .disabled(askPepe.isEmpty)
-            .buttonStyle(.bordered)
-            .tint(.cyan)
-            
-            Spacer()
+            .scrollDisabled(true)
             
             if let meme = meme {
                 MemeView(meme: meme)
+                    .scaledToFit()
             } else {
                 Image(.image)
                     .resizable()
@@ -50,7 +52,6 @@ struct ContentView: View {
                     askPepe = ""
                     meme = nil
                 }
-                .buttonStyle(.bordered)
                 .tint(.green)
                 
                 Button("👎") {
@@ -58,12 +59,14 @@ struct ContentView: View {
                         meme = await loadRandomMeme()
                     }
                 }
-                .buttonStyle(.bordered)
                 .tint(.red)
                 
             }
+            .buttonStyle(.bordered)
+            .controlSize(.large)
             .disabled(meme == nil)
         }
+            .ignoresSafeArea(.keyboard, edges: .bottom)
     }
 }
 
