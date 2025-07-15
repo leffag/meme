@@ -31,18 +31,23 @@ struct ContentView: View {
                     }
                 }
                 .disabled(askPepe.isEmpty)
+                .disabled(meme != nil)
                 .buttonStyle(.bordered)
                 .tint(.cyan)
             }
             .scrollDisabled(true)
             
-            if let meme = meme {
-                MemeView(meme: meme)
-                    .scaledToFit()
-            } else {
-                Image(.image)
-                    .resizable()
-                    .frame(width: 256,height: 256)
+            VStack(alignment: .center) {
+                if let meme = meme {
+                    MemeView(meme: meme)
+                        .scaledToFit()
+                } else {
+                    Image(.image)
+                        .resizable()
+                        .frame(width: 256,height: 256)
+                }
+                
+                Spacer()
             }
             
             Spacer()
