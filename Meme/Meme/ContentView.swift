@@ -29,8 +29,9 @@ struct ContentView: View {
                     meme = await loadRandomMeme()
                 }
             }
+            .disabled(askPepe.isEmpty)
             .buttonStyle(.bordered)
-            .foregroundStyle(.foreground)
+            .tint(.cyan)
             
             Spacer()
             
@@ -46,7 +47,8 @@ struct ContentView: View {
             
             HStack {
                 Button("👍") {
-                    
+                    askPepe = ""
+                    meme = nil
                 }
                 .buttonStyle(.bordered)
                 .tint(.green)
@@ -60,6 +62,7 @@ struct ContentView: View {
                 .tint(.red)
                 
             }
+            .disabled(meme == nil)
         }
     }
 }
