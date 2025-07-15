@@ -16,10 +16,13 @@ struct ContentView: View {
             ScrollView() {
                 HStack {
                     Spacer()
+                    
                     Image(systemName: "magnifyingglass")
                         .imageScale(.large)
                         .foregroundStyle(.foreground)
+                    
                     TextField("спроси пепачку", text: $askPepe)
+                    
                     Spacer()
                 }
                 .textFieldStyle(.roundedBorder)
