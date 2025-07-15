@@ -29,7 +29,7 @@ struct MemeView: View {
 #Preview {
     MemeView(
         meme: .init(
-            id: 101470,
+            id: "101470",
             name: "Ancient Aliens",
             url: .init(string: "https://i.imgflip.com/26am.jpg")!,
         )

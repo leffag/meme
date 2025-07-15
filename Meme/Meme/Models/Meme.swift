@@ -8,7 +8,7 @@
 import Foundation
 
 struct Meme: Decodable, Equatable, Identifiable {
-    let id: Int
+    let id: String
     let name: String
     let url: URL
 }
