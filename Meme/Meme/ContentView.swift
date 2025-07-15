@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @State var askPepe = ""
-    @State var memes: [Meme]? = nil
+    @State var meme: Meme? = nil
     
     var body: some View {
         VStack(spacing: 50) {
@@ -26,15 +26,20 @@ struct ContentView: View {
             
             Button("ПОЛУЧИТЬ ПРЕДСКАЗАНИЕ") {
                 Task {
-                    memes = await getMemes()
+                    meme = await getMemes().randomElement()
                 }
             }
             .buttonStyle(.bordered)
             .foregroundStyle(.foreground)
             
-            Image(.image)
-                .resizable()
-                .frame(width: 256,height: 256)
+            if let meme = meme {
+                MemeView(meme: meme)
+            } else {
+                Image(.image)
+                    .resizable()
+                    .frame(width: 256,height: 256)
+            }
+            
             
             HStack {
                 Button("👍") {
