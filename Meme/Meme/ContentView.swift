@@ -26,11 +26,13 @@ struct ContentView: View {
             
             Button("ПОЛУЧИТЬ ПРЕДСКАЗАНИЕ") {
                 Task {
-                    meme = await getMemes().randomElement()
+                    meme = await loadRandomMeme()
                 }
             }
             .buttonStyle(.bordered)
             .foregroundStyle(.foreground)
+            
+            Spacer()
             
             if let meme = meme {
                 MemeView(meme: meme)
@@ -40,6 +42,7 @@ struct ContentView: View {
                     .frame(width: 256,height: 256)
             }
             
+            Spacer()
             
             HStack {
                 Button("👍") {
@@ -49,7 +52,9 @@ struct ContentView: View {
                 .tint(.green)
                 
                 Button("👎") {
-                    
+                    Task {
+                        meme = await loadRandomMeme()
+                    }
                 }
                 .buttonStyle(.bordered)
                 .tint(.red)
@@ -63,7 +68,7 @@ struct ContentView: View {
     ContentView()
 }
 
-func getMemes() async -> [Meme] {
+func getMemesFromAPI() async -> [Meme] {
     let data: Data
     
     let url = URL(string: "https://api.imgflip.com/get_memes")!
@@ -80,4 +85,8 @@ func getMemes() async -> [Meme] {
     } catch {
         fatalError("ловити \(error)")
     }
+}
+
+func loadRandomMeme() async -> Meme? {
+    await getMemesFromAPI().randomElement()
 }
