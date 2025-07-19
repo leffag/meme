@@ -22,8 +22,6 @@ struct ContentView: View {
                         .foregroundStyle(.foreground)
                     
                     TextField("спроси пепачку", text: $askPepe)
-                    
-                    Spacer()
                 }
                 .textFieldStyle(.roundedBorder)
                 .padding()
@@ -47,32 +45,40 @@ struct ContentView: View {
                 } else {
                     Image(.image)
                         .resizable()
-                        .frame(width: 256,height: 256)
+                        .mask(
+                            LinearGradient(
+                                stops: [
+                                    .init(color: .black, location: 0.5),
+                                    .init(color: .clear, location: 1)
+                                ],
+                                startPoint: .center,
+                                endPoint: .bottom
+                            )
+                        )
+                        .scaledToFill()
                 }
                 
                 Spacer()
-            }
-            
-            Spacer()
-            
-            HStack {
-                Button("👍") {
-                    askPepe = ""
-                    meme = nil
-                }
-                .tint(.green)
                 
-                Button("👎") {
-                    Task {
-                        meme = await loadRandomMeme()
+                HStack {
+                    Button("👍") {
+                        askPepe = ""
+                        meme = nil
                     }
+                    .tint(.green)
+                    
+                    Button("👎") {
+                        Task {
+                            meme = await loadRandomMeme()
+                        }
+                    }
+                    .tint(.red)
+                    
                 }
-                .tint(.red)
-                
+                .buttonStyle(.bordered)
+                .controlSize(.large)
+                .disabled(meme == nil)
             }
-            .buttonStyle(.bordered)
-            .controlSize(.large)
-            .disabled(meme == nil)
         }
             .ignoresSafeArea(.keyboard, edges: .bottom)
     }
