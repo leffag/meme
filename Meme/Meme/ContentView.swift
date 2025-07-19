@@ -10,6 +10,7 @@ import SwiftUI
 struct ContentView: View {
     @State var askPepe = ""
     @State var meme: Meme? = nil
+    @FocusState var isFocused: Bool
     
     var body: some View {
         VStack(spacing: 8) {
@@ -34,11 +35,14 @@ struct ContentView: View {
                     .foregroundStyle(.foreground)
                 
                 TextField("спроси пепачку", text: $askPepe)
+                    .focused($isFocused)
             }
             .textFieldStyle(.roundedBorder)
             .padding()
             
             Button("ПОЛУЧИТЬ ПРЕДСКАЗАНИЕ") {
+                isFocused = false
+                
                 Task {
                     meme = await loadRandomMeme()
                 }
