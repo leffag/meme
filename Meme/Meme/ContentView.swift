@@ -12,75 +12,85 @@ struct ContentView: View {
     @State var meme: Meme? = nil
     
     var body: some View {
-        VStack(spacing: 50) {
-            ScrollView() {
-                HStack {
-                    Spacer()
-                    
-                    Image(systemName: "magnifyingglass")
-                        .imageScale(.large)
-                        .foregroundStyle(.foreground)
-                    
-                    TextField("спроси пепачку", text: $askPepe)
-                }
-                .textFieldStyle(.roundedBorder)
-                .padding()
-                
-                Button("ПОЛУЧИТЬ ПРЕДСКАЗАНИЕ") {
-                    Task {
-                        meme = await loadRandomMeme()
-                    }
-                }
-                .disabled(askPepe.isEmpty)
-                .disabled(meme != nil)
-                .buttonStyle(.bordered)
-                .tint(.cyan)
-            }
-            .scrollDisabled(true)
+        VStack(spacing: 8) {
+            header
             
-            VStack(alignment: .center) {
-                if let meme = meme {
-                    MemeView(meme: meme)
-                        .scaledToFit()
-                } else {
-                    Image(.image)
-                        .resizable()
-                        .mask(
-                            LinearGradient(
-                                stops: [
-                                    .init(color: .black, location: 0.5),
-                                    .init(color: .clear, location: 1)
-                                ],
-                                startPoint: .center,
-                                endPoint: .bottom
-                            )
-                        )
-                        .scaledToFill()
-                }
-                
+            memeView
+            
+            Spacer()
+            
+            actionButtons
+        }
+        .ignoresSafeArea(.keyboard, edges: .bottom)
+    }
+    
+    private var header: some View {
+        VStack(spacing: 50) {
+            HStack {
                 Spacer()
                 
-                HStack {
-                    Button("👍") {
-                        askPepe = ""
-                        meme = nil
-                    }
-                    .tint(.green)
-                    
-                    Button("👎") {
-                        Task {
-                            meme = await loadRandomMeme()
-                        }
-                    }
-                    .tint(.red)
-                    
-                }
-                .buttonStyle(.bordered)
-                .controlSize(.large)
-                .disabled(meme == nil)
+                Image(systemName: "magnifyingglass")
+                    .imageScale(.large)
+                    .foregroundStyle(.foreground)
+                
+                TextField("спроси пепачку", text: $askPepe)
             }
+            .textFieldStyle(.roundedBorder)
+            .padding()
+            
+            Button("ПОЛУЧИТЬ ПРЕДСКАЗАНИЕ") {
+                Task {
+                    meme = await loadRandomMeme()
+                }
+            }
+            .disabled(askPepe.isEmpty)
+            .disabled(meme != nil)
+            .buttonStyle(.bordered)
+            .tint(.cyan)
         }
-            .ignoresSafeArea(.keyboard, edges: .bottom)
+    }
+    
+    @ViewBuilder
+    private var memeView: some View {
+        if let meme = meme {
+            MemeView(meme: meme)
+                .scaledToFit()
+        } else {
+            Image(.image)
+                .resizable()
+                .mask(
+                    LinearGradient(
+                        stops: [
+                            .init(color: .black, location: 0.5),
+                            .init(color: .clear, location: 1)
+                        ],
+                        startPoint: .center,
+                        endPoint: .bottom
+                    )
+                )
+                .scaledToFit()
+        }
+    }
+    
+    private var actionButtons: some View {
+        HStack {
+            Button("👍") {
+                askPepe = ""
+                meme = nil
+            }
+            .tint(.green)
+            
+            Button("👎") {
+                Task {
+                    meme = await loadRandomMeme()
+                }
+            }
+            .tint(.red)
+            
+        }
+        .buttonStyle(.bordered)
+        .controlSize(.large)
+        .disabled(meme == nil)
     }
 }
 
